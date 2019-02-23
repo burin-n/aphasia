@@ -1,0 +1,4 @@
+D00 /home/burin/kaldi/egs/aphasia/s5/data/mfcc/cmvn_test_disability_atypical.ark:4
+spk00 /home/burin/kaldi/egs/aphasia/s5/data/mfcc/cmvn_test_disability_atypical.ark:249
+spk01 /home/burin/kaldi/egs/aphasia/s5/data/mfcc/cmvn_test_disability_atypical.ark:494
+spk02 /home/burin/kaldi/egs/aphasia/s5/data/mfcc/cmvn_test_disability_atypical.ark:739
