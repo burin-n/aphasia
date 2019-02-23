@@ -1,3 +1,9 @@
 audios/
+train_hires*/
 exp/
 tmp/
+mfcc/
+nbest/
+
+
+

@@ -5,7 +5,9 @@
 
 stage=1
 train_stage=-10
-use_gpu=true
+use_gpu=false
+target_test=test
+ndecode=6
 set -e
 . cmd.sh
 . ./path.sh
@@ -21,12 +23,11 @@ If you want to use GPUs (and have them), go to src/, and configure and make on a
 where "nvcc" is installed.
 EOF
 fi
-parallel_opts="-l gpu=1"
+#parallel_opts="-l gpu=1"
 #parallel_opts="--gpu 1"
-#num_threads=16
-num_threads=1
+num_threads=16
+#num_threads=1
 minibatch_size=256
-ndecode=7
 #####minibatch_size=512
 dir=exp/nnet2_online/nnet_ms_a
 mkdir -p exp/nnet2_online
@@ -54,7 +55,7 @@ if [ $stage -le 6 ]; then
     --splice-indexes "layer0/-2:-1:0:1:2 layer1/-1:2" \
     --num-epochs 16 \
     --num-hidden-layers 3 \
-    --num-jobs-initial 3 --num-jobs-final 3 \
+    --num-jobs-initial 1 --num-jobs-final 1 \
     --online-ivector-dir exp/nnet2_online/ivectors_train \
     --cmvn-opts "--norm-means=false --norm-vars=false" \
     --num-threads "$num_threads" \
@@ -80,12 +81,12 @@ if [ $stage -le 7 ]; then
   data/lang exp/nnet2_online/extractor "$dir" ${dir}_online || exit 1;
 fi
 
-#echo "iter $COUNTER"
+echo "iter $COUNTER"
 if [ $stage -le 8 ]; then
   # do the actual online decoding with iVectors, carrying info forward from
   # previous utterances of the same speaker.
   steps/online/nnet2/decode.sh --config conf/decode.config --cmd "$decode_cmd" --nj $ndecode --iter $COUNTER \
-	exp/tri3b/graph data/test ${dir}_online/decode_test_${COUNTER} || exit 1;
+	exp/tri3b/graph data/${target_test} ${dir}_online/decode_${target_test}_${COUNTER} || exit 1;
 fi
 echo ZZZZ
 if [ $stage -le 9 ]; then
@@ -93,7 +94,7 @@ if [ $stage -le 9 ]; then
  # without carrying forward speaker information.
  steps/online/nnet2/decode.sh --config conf/decode.config --cmd "$decode_cmd" --nj $ndecode --iter $COUNTER \
    --per-utt true \
-    exp/tri3b/graph data/test ${dir}_online/decode_test_utt_${COUNTER} || exit 1;
+    exp/tri3b/graph data/${target_test} ${dir}_online/decode_${target_test}_utt_${COUNTER} || exit 1;
 fi
 echo TTTTTTTTTT
 if [ $stage -le 10 ]; then
@@ -102,7 +103,7 @@ if [ $stage -le 10 ]; then
   # of the utterance while computing the iVector.
   steps/online/nnet2/decode.sh --config conf/decode.config --cmd "$decode_cmd" --nj $ndecode --iter $COUNTER \
 	  --per-utt true --online false \
-  exp/tri3b/graph data/test ${dir}_online/decode_test_utt_offline_${COUNTER} || exit 1;
+  exp/tri3b/graph data/${target_test} ${dir}_online/decode_${target_test}_utt_offline_${COUNTER} || exit 1;
 fi
 
 #  let COUNTER=COUNTER+1 

@@ -21,8 +21,8 @@
 
 # The number of parallel jobs to be started for some parts of the recipe
 # Make sure you have enough resources(CPUs and RAM) to accomodate this number of jobs
-njobs=7
-njobs_decode=7
+njobs=6
+njobs_decode=6
 
 # The number of randomly selected speakers to be put in the test set
 #nspk_test=2

@@ -1,8 +1,0 @@
-# wav-to-duration --read-entire-file=false scp:data/train_hires/split4utt/4/wav.scp ark,t:data/train_hires/split4utt/4/utt2dur 
-# Started at Tue Oct 30 00:49:27 EDT 2018
-#
-wav-to-duration --read-entire-file=false scp:data/train_hires/split4utt/4/wav.scp ark,t:data/train_hires/split4utt/4/utt2dur 
-LOG (wav-to-duration[5.4.49~2-55625]:main():wav-to-duration.cc:92) Printed duration for 1852 audio files.
-LOG (wav-to-duration[5.4.49~2-55625]:main():wav-to-duration.cc:94) Mean duration was 2.76797, min and max durations were 0.708188, 8.38819
-# Accounting: time=0 threads=1
-# Ended (code 0) at Tue Oct 30 00:49:27 EDT 2018, elapsed time 0 seconds
